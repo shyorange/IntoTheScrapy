@@ -6,7 +6,7 @@
 爬虫运行主文件
 """
 import time;
-from . import html_parser,html_downloader,html_outputer,url_manager;
+import html_parser,html_downloader,html_outputer,url_manager;
 
 # 项目入口
 
@@ -18,7 +18,7 @@ class SpiderMain:
         self.parser = html_parser.HtmlParser();
         self.outputer = html_outputer.HtmlOutputer();
 
-    def crawl(self,root_url,page_count=5,time_sleep=None):
+    def crawl(self,root_url,page_count=1,time_sleep=None):
         count = 1;
         # 将起始url放入集合
         self.url_manager.add_new_url(root_url);
@@ -33,7 +33,7 @@ class SpiderMain:
                 # 获得想要的数据（该页面内的url连接，和该页面的数据）
                 urls, data = self.parser.parse(html_content);
                 # 将上步获得的urls放入url管理器
-                self.url_manager.add_new_url(urls);
+                self.url_manager.add_new_urls(urls);
                 # 将获得的数据存入数据库
                 self.outputer.collect_data(new_url,data);
                 # 如果超过爬取上线，就退出
